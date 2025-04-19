@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Appointment</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+
+    function bookAppointment(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const doctor = document.getElementById("doctor").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+
+      const appointment = { name, doctor, date, time };
+      let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      appointments.push(appointment);
+      localStorage.setItem("appointments", JSON.stringify(appointments));
+      alert("Appointment booked!");
+      displayAppointments();
+      document.getElementById("appointmentForm").reset();
+    }
+
+    function displayAppointments() {
+      const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+      const list = document.getElementById("appointmentList");
+      list.innerHTML = appointments.map(a => 
+        `<li>${a.name} with ${a.doctor} on ${a.date} at ${a.time}</li>`
+      ).join("");
+    }
+
+    window.onload = displayAppointments;
+  </script>
+</head>
+<body>
+  <h1>Book Doctor Appointment</h1>
+  <form id="appointmentForm" onsubmit="bookAppointment(event)">
+    <input type="text" id="name" placeholder="Your Name" required class="input-field"><br>
+    <select id="doctor" class="input-field" required>
+      <option value="">Select Doctor</option>
+      <option>Dr. John Smith - Cardiologist</option>
+      <option>Dr. Jane Doe - Dermatologist</option>
+      <option>Dr. Mike Johnson - General Physician</option>
+    </select><br>
+    <input type="date" id="date" required class="input-field"><br>
+    <input type="time" id="time" required class="input-field"><br>
+    <button type="submit" class="btn">Book Appointment</button>
+  </form>
+
+  <h2>Your Appointments</h2>
+  <ul id="appointmentList"></ul>
+
+  <button onclick="logout()" class="btn">Logout</button>
+</body>
+</html>

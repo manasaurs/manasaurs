@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab Reports</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+
+    function uploadReport(event) {
+      event.preventDefault();
+      const reportName = document.getElementById("reportName").value;
+      let reports = JSON.parse(localStorage.getItem("labReports")) || [];
+      reports.push(reportName);
+      localStorage.setItem("labReports", JSON.stringify(reports));
+      alert("Report uploaded (simulated)!");
+      displayReports();
+      document.getElementById("reportForm").reset();
+    }
+
+    function displayReports() {
+      const reports = JSON.parse(localStorage.getItem("labReports")) || [];
+      const list = document.getElementById("reportList");
+      list.innerHTML = reports.map(name => 
+        `<li>${name} - <a href="#">Download</a></li>`
+      ).join("");
+    }
+
+    window.onload = displayReports;
+  </script>
+</head>
+<body>
+  <h1>Lab Reports</h1>
+  <form id="reportForm" onsubmit="uploadReport(event)">
+    <input type="text" id="reportName" placeholder="Enter Report Name" required class="input-field"><br>
+    <button type="submit" class="btn">Upload Report</button>
+  </form>
+
+  <h2>Your Reports</h2>
+  <ul id="reportList"></ul>
+
+  <button onclick="logout()" class="btn">Logout</button>
+</body>
+</html>

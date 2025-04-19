@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Health Tips</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+
+    const tips = [
+      "Stay hydrated with at least 8 glasses of water a day.",
+      "Eat plenty of fruits and vegetables.",
+      "Get at least 7–8 hours of sleep every night.",
+      "Exercise regularly – even walking counts!",
+      "Take breaks from screens every hour.",
+      "Wash your hands frequently to prevent illness.",
+      "Manage stress with mindfulness or hobbies.",
+      "Avoid sugary drinks and junk food.",
+      "Practice good posture when sitting or standing.",
+      "Don't skip breakfast – fuel your day right!"
+    ];
+
+    function showRandomTip() {
+      const randomIndex = Math.floor(Math.random() * tips.length);
+      document.getElementById("tipDisplay").textContent = tips[randomIndex];
+    }
+
+    window.onload = showRandomTip;
+  </script>
+</head>
+<body>
+  <h1>Health Tips</h1>
+  <div id="tipDisplay" class="input-field" style="margin-bottom: 10px;"></div>
+  <button onclick="showRandomTip()" class="btn">Show Another Tip</button>
+
+  <br><br>
+  <button onclick="logout()" class="btn">Logout</button>
+</body>
+</html>
